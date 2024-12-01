@@ -9,7 +9,7 @@ const LayoutComponent = ({children}) => {
     return (
         <Layout style={{minHeight: '100vh'}}>
             <AppHeader/>
-            <Content style={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '24px'}}>
+            <Content style={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0'}}>
                 {children}
             </Content>
             <AppFooter/>
