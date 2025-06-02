@@ -13,31 +13,41 @@ const AdminAppHeader = () => {
             backgroundColor: '#ffffff',
         }}>
             <div style={{display: 'flex', gap: '16px'}}>
-                <Link to="/admin/doctors">
-                    <Button type="primary" size="large" style={{width: '150px'}}>
-                        Doctors
-                    </Button>
-                </Link>
                 <Link to="/admin/patients">
                     <Button type="primary" size="large" style={{width: '150px'}}>
-                        Patients
+                        Пациенты
                     </Button>
                 </Link>
                 <Link to="/admin/services">
                     <Button type="primary" size="large" style={{width: '150px'}}>
-                        Services
+                        Услуги
+                    </Button>
+                </Link>
+                <Link to="/admin/feedbacks">
+                    <Button type="primary" size="large" style={{width: '150px'}}>
+                        Отзывы
+                    </Button>
+                </Link>
+                <Link to="/admin/doctors">
+                    <Button type="primary" size="large" style={{width: '150px'}}>
+                        Врачи
+                    </Button>
+                </Link>
+                <Link to="/admin/work-days">
+                    <Button type="primary" size="large" style={{width: '150px'}}>
+                        Рабочие дни
                     </Button>
                 </Link>
                 <Link to="/admin/appointments">
                     <Button type="primary" size="large" style={{width: '150px'}}>
-                        Appointments
+                        Записи
                     </Button>
                 </Link>
             </div>
             <div>
                 <Link to="/">
-                    <Button type="primary" size="large" style={{width: '150px'}}>
-                        User Menu
+                    <Button type="primary" size="large" style={{width: '200px'}}>
+                        Пользовательское меню
                     </Button>
                 </Link>
             </div>

@@ -1,17 +1,24 @@
 import {message} from "antd";
 
 export const fetchDoctor = async (doctorId) => {
-    const response = await fetch(`http://localhost:8090/api/v1/doctors/${doctorId}`);
+    const response = await fetch(`http://localhost:8081/api/v1/doctors/${doctorId}`);
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
     return response.json();
 };
 
-export const fetchDoctors = async (pageNumber, pageSize) => {
-    const response = await fetch(`http://localhost:8090/api/v1/doctors?page=${pageNumber}&limit=${pageSize}`);
+export const fetchDoctors = async () => {
+    const url = 'http://localhost:8888/api/v1/doctors';
+    console.log("Fetching doctors from URL:", url); // Логируем URL для отладки
+
+    const response = await fetch(url);
+
     if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        // Попробуем прочитать тело ответа для более детальной информации об ошибке
+        const errorText = await response.text();
+        console.error("HTTP error details:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
     }
     return response.json();
 };
@@ -37,7 +44,7 @@ export const createDoctor = async (values, file) => {
             formData.append('file', file.originFileObj);
         }
 
-        const response = await fetch(`http://localhost:8090/api/v1/doctors`, {
+        const response = await fetch(`http://localhost:8888/api/v1/doctors`, {
             method: 'POST',
             body: formData,
         });
@@ -72,8 +79,6 @@ export const updateDoctor = async (values, file, doctor) => {
             experience: values.experience,
             birthDate: values.birthDate
         };
-
-        console.log(doctorRequest)
 
         formData.append('doctorRequest', new Blob([JSON.stringify(doctorRequest)], {type: 'application/json'}));
 

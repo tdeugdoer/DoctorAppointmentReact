@@ -26,7 +26,7 @@ const AdminPatients = () => {
             });
             setPatients(updatedPatients);
         } catch (error) {
-            message.error("Error loading patients' data");
+            message.error("Ошибка загрузки данных о пациентах");
         } finally {
             setLoading(false);
         }
@@ -56,7 +56,7 @@ const AdminPatients = () => {
     const filteredPatients = patients.filter((patient) => {
         const searchLower = searchText.toLowerCase();
         return (
-            patient.id.toLowerCase().includes(searchLower) ||
+            patient.id.toString().toLowerCase().includes(searchLower) ||
             patient.name.toLowerCase().includes(searchLower) ||
             patient.surname.toLowerCase().includes(searchLower) ||
             (patient.patronymic && patient.patronymic.toLowerCase().includes(searchLower)) ||
@@ -73,61 +73,53 @@ const AdminPatients = () => {
 
     const columns = [
         {
-            title: "Id",
-            dataIndex: "id",
-            key: "id",
-        },
-        {
-            title: "First Name",
+            title: "Имя",
             dataIndex: "name",
             key: "name",
             sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
-            title: "Last Name",
+            title: "Фамилия",
             dataIndex: "surname",
             key: "surname",
             sorter: (a, b) => a.surname.localeCompare(b.surname),
         },
         {
-            title: "Patronymic",
+            title: "Отчество",
             dataIndex: "patronymic",
             key: "patronymic",
             render: (text) => text || "—",
         },
         {
-            title: "Gender",
+            title: "Пол",
             dataIndex: "gender",
             key: "gender",
             filters: [
-                {text: 'Male', value: 'Men'},
-                {text: 'Female', value: 'Women'},
+                {text: 'Мужской', value: 'Men'},
+                {text: 'Женский', value: 'Women'},
             ],
             onFilter: (value, record) => record.gender.includes(value),
         },
         {
-            title: "Phone",
+            title: "Телефон",
             dataIndex: "phoneNumber",
             key: "phoneNumber",
             sorter: (a, b) => a.phoneNumber.localeCompare(b.phoneNumber),
         },
         {
-            title: "Birth Date",
+            title: "Дата рождения",
             dataIndex: "birthDate",
             key: "birthDate",
             render: (text) => formatDate(text),
             sorter: (a, b) => new Date(a.birthDate) - new Date(b.birthDate),
         },
         {
-            title: "Actions",
+            title: "Действия",
             key: "actions",
             render: (_, record) => (
                 <>
-                    <Button type="link" onClick={() => openUpdateModal(record)} style={{marginRight: 8}}>
-                        Update
-                    </Button>
                     <Button type="link" danger onClick={() => handleDelete(record.id)}>
-                        Delete
+                        Удалить
                     </Button>
                 </>
             ),
@@ -136,22 +128,14 @@ const AdminPatients = () => {
 
     const handleDelete = async (patientId) => {
         // Здесь можно добавить запрос на удаление пациента
-        message.info(`Deleting patient with ID: ${patientId}`);
+        message.info(`Удаление пациента с ID: ${patientId}`);
     };
 
     return (
-        <div>
+        <div style={{padding: '0 24px'}}>
             <AdminAppHeader/>
-            <div style={{display: 'flex', justifyContent: 'center', margin: '20px 0'}}>
-                <Button
-                    type="primary"
-                    style={{fontSize: '16px', padding: '10px 20px'}}
-                >
-                    Add Patient
-                </Button>
-            </div>
             <Search
-                placeholder="Search patients"
+                placeholder="Поиск пациентов"
                 onSearch={handleSearch}
                 style={{marginBottom: 20}}
                 allowClear
@@ -181,7 +165,7 @@ const AdminPatients = () => {
                 >
                     <img
                         src={hoveredPatient.image}
-                        alt="Patient"
+                        alt="Пациент"
                         style={{
                             width: '100px',
                             height: '100px',

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.5.2",
+    "@pbe/react-yandex-maps": "^1.2.5",
     "@tanstack/react-query": "^5.61.0",
     "antd": "^5.22.1",
     "axios": "^1.7.7",

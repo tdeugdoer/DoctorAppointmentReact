@@ -1,5 +1,6 @@
 export const fetchService = async (serviceId) => {
-    const response = await fetch(`http://localhost:8090/api/v1/services/${serviceId}`);
+    console.log(serviceId)
+    const response = await fetch(`http://localhost:8888/api/v1/services/${serviceId}`);
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -7,7 +8,7 @@ export const fetchService = async (serviceId) => {
 };
 
 export const fetchServices = async () => {
-    const response = await fetch(`http://localhost:8090/api/v1/services`);
+    const response = await fetch(`http://localhost:8888/api/v1/services`);
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }

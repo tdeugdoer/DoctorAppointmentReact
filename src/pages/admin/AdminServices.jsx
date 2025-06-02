@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Button, Input, message, Table} from "antd";
 import AdminAppHeader from "../../widgets/AdminAppHeader.jsx";
-import {deleteService, fetchServices} from "../../queries/services.jsx"; // Update this import as needed
+import {deleteService, fetchServices} from "../../queries/services.jsx";
 
 const {Search} = Input;
 
@@ -14,9 +14,9 @@ const AdminServices = () => {
         setLoading(true);
         try {
             const response = await fetchServices();
-            setServices(response.objectList); // Adjust based on actual response structure
+            setServices(response.objectList);
         } catch (error) {
-            message.error("Error loading services data");
+            message.error("Ошибка загрузки данных о услугах");
         } finally {
             setLoading(false);
         }
@@ -28,11 +28,11 @@ const AdminServices = () => {
 
     const handleDelete = async (serviceId) => {
         try {
-            await deleteService(serviceId); // Implement deleteService function
-            message.success("Service successfully deleted");
+            await deleteService(serviceId);
+            message.success("Услуга успешно удалена");
             await loadServices();
         } catch (error) {
-            message.error("Error deleting service");
+            message.error("Ошибка удаления услуги");
         }
     };
 
@@ -43,7 +43,7 @@ const AdminServices = () => {
     const filteredServices = services.filter((service) => {
         const searchLower = searchText.toLowerCase();
         return (
-            service.id.toLowerCase().includes(searchLower) ||
+            service.id.toString().toLowerCase().includes(searchLower) ||
             service.name.toLowerCase().includes(searchLower) ||
             service.specialization.toLowerCase().includes(searchLower) ||
             String(service.price).includes(searchLower) ||
@@ -53,63 +53,58 @@ const AdminServices = () => {
 
     const columns = [
         {
-            title: "Id",
-            dataIndex: "id",
-            key: "id",
-        },
-        {
-            title: "Name",
+            title: "Название",
             dataIndex: "name",
             key: "name",
             sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
-            title: "Specialization",
+            title: "Специализация",
             dataIndex: "specialization",
             key: "specialization",
             sorter: (a, b) => a.specialization.localeCompare(b.specialization),
         },
         {
-            title: "Price",
+            title: "Цена",
             dataIndex: "price",
             key: "price",
-            render: (text) => `$${text.toFixed(2)}`,
+            render: (text) => `${text.toFixed(2)} р.`,
             sorter: (a, b) => a.price - b.price,
         },
         {
-            title: "Description",
+            title: "Описание",
             dataIndex: "description",
             key: "description",
         },
         {
-            title: "Actions",
+            title: "Действия",
             key: "actions",
             render: (_, record) => (
-                <>
-                    <Button type="link" onClick={() => openUpdateModal(record)} style={{marginRight: 8}}>
-                        Update
+                <div style={{display: 'flex', gap: '8px'}}>
+                    <Button type="link" onClick={() => openUpdateModal(record)}>
+                        Обновить
                     </Button>
                     <Button type="link" danger onClick={() => handleDelete(record.id)}>
-                        Delete
+                        Удалить
                     </Button>
-                </>
+                </div>
             ),
-        },
+        }
     ];
 
     return (
-        <div>
+        <div style={{padding: '0 24px'}}>
             <AdminAppHeader/>
             <div style={{display: 'flex', justifyContent: 'center', margin: '20px 0'}}>
                 <Button
                     type="primary"
                     style={{fontSize: '16px', padding: '10px 20px'}}
                 >
-                    Add Service
+                    Добавить услугу
                 </Button>
             </div>
             <Search
-                placeholder="Search services"
+                placeholder="Поиск услуг"
                 onSearch={handleSearch}
                 style={{marginBottom: 20}}
                 allowClear

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Input, message, Table} from "antd";
+import {Button, Input, message, Rate, Table} from "antd";
 import AdminAppHeader from "../../widgets/AdminAppHeader.jsx";
 import CreateDoctorModal from "../../widgets/modal/CreateDoctorModal.jsx";
 import {deleteDoctor, fetchDoctors} from "../../queries/doctors.jsx";
@@ -11,11 +11,11 @@ const AdminDoctors = () => {
     const [doctors, setDoctors] = useState([]);
     const [loading, setLoading] = useState(false);
     const [addModalVisible, setAddModalVisible] = useState(false);
-    const [updateModalVisible, setUpdateModalVisible] = useState(false); // Разделение состояний
+    const [updateModalVisible, setUpdateModalVisible] = useState(false);
     const [searchText, setSearchText] = useState("");
     const [hoveredDoctor, setHoveredDoctor] = useState(null);
     const [mousePosition, setMousePosition] = useState({x: 0, y: 0});
-    const [selectedDoctor, setSelectedDoctor] = useState(null); // Новое состояние для выбранного доктора
+    const [selectedDoctor, setSelectedDoctor] = useState(null);
 
     const loadDoctors = async () => {
         setLoading(true);
@@ -25,13 +25,17 @@ const AdminDoctors = () => {
                 if (doctor.image) {
                     const url = new URL(doctor.image);
                     url.searchParams.set('t', Date.now());
-                    return {...doctor, image: url.toString()};
+                    return {
+                        ...doctor,
+                        image: url.toString(),
+                        rating: doctor.rating || 0 // Добавляем рейтинг, если его нет
+                    };
                 }
-                return doctor;
+                return {...doctor, rating: doctor.rating || 0};
             });
             setDoctors(updatedDoctors);
         } catch (error) {
-            message.error("Error loading doctors' data");
+            message.error("Ошибка загрузки данных о врачах");
         } finally {
             setLoading(false);
         }
@@ -41,7 +45,6 @@ const AdminDoctors = () => {
         loadDoctors();
     }, []);
 
-    // Отслеживание позиции курсора
     useEffect(() => {
         const handleMouseMove = (e) => {
             setMousePosition({x: e.clientX, y: e.clientY});
@@ -56,10 +59,10 @@ const AdminDoctors = () => {
     const handleDelete = async (doctorId) => {
         try {
             await deleteDoctor(doctorId);
-            message.success("Doctor successfully deleted");
+            message.success("Доктор успешно удалён");
             await loadDoctors();
         } catch (error) {
-            message.error("Error deleting doctor");
+            message.error("Ошибка удаления доктора");
         }
     };
 
@@ -73,13 +76,13 @@ const AdminDoctors = () => {
     };
 
     const openUpdateModal = (doctor) => {
-        setSelectedDoctor(doctor); // Устанавливаем выбранного доктора
-        setUpdateModalVisible(true); // Открываем модальное окно
+        setSelectedDoctor(doctor);
+        setUpdateModalVisible(true);
     };
 
     const closeUpdateModal = async () => {
         setUpdateModalVisible(false);
-        setSelectedDoctor(null); // Сбрасываем выбранного доктора
+        setSelectedDoctor(null);
         await loadDoctors();
     };
 
@@ -90,13 +93,13 @@ const AdminDoctors = () => {
     const filteredDoctors = doctors.filter((doctor) => {
         const searchLower = searchText.toLowerCase();
         return (
-            doctor.id.toLowerCase().includes(searchLower) ||
             doctor.name.toLowerCase().includes(searchLower) ||
             doctor.surname.toLowerCase().includes(searchLower) ||
             doctor.specialization.toLowerCase().includes(searchLower) ||
             doctor.gender.toLowerCase().includes(searchLower) ||
             doctor.phoneNumber.toLowerCase().includes(searchLower) ||
             String(doctor.experience).includes(searchLower) ||
+            String(doctor.rating).includes(searchLower) || // Добавляем поиск по рейтингу
             new Date(doctor.birthDate).toLocaleDateString().includes(searchLower)
         );
     });
@@ -108,77 +111,79 @@ const AdminDoctors = () => {
 
     const columns = [
         {
-            title: "Id",
-            dataIndex: "id",
-            key: "id",
-        },
-        {
-            title: "First Name",
+            title: "Имя",
             dataIndex: "name",
             key: "name",
             sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
-            title: "Last Name",
+            title: "Фамилия",
             dataIndex: "surname",
             key: "surname",
             sorter: (a, b) => a.surname.localeCompare(b.surname),
         },
         {
-            title: "Specialization",
+            title: "Специализация",
             dataIndex: "specialization",
             key: "specialization",
             filters: [
-                {text: 'Therapy', value: 'Therapy'},
-                {text: 'Surgery', value: 'Surgery'},
-                {text: 'Pediatrics', value: 'Pediatrics'},
-                {text: 'Neurology', value: 'Neurology'},
-                {text: 'Dentistry', value: 'Dentistry'},
-                {text: 'Gynecology', value: 'Gynecology'},
-                {text: 'Dermatological', value: 'Dermatological'},
-                {text: 'Other', value: 'Other'},
+                {text: 'Терапевт', value: 'Therapy'},
+                {text: 'Хирургия', value: 'Surgery'},
+                {text: 'Педиатрия', value: 'Pediatrics'},
+                {text: 'Неврология', value: 'Neurology'},
+                {text: 'Стоматология', value: 'Dentistry'},
+                {text: 'Гинекология', value: 'Gynecology'},
+                {text: 'Дерматология', value: 'Dermatological'},
+                {text: 'Другое', value: 'Other'},
             ],
             onFilter: (value, record) => record.specialization.includes(value),
         },
         {
-            title: "Gender",
+            title: "Рейтинг",
+            dataIndex: "rating",
+            key: "rating",
+            render: (rating) => <Rate disabled defaultValue={rating}/>,
+            sorter: (a, b) => a.rating - b.rating,
+        },
+        {
+            title: "Пол",
             dataIndex: "gender",
             key: "gender",
             filters: [
-                {text: 'Male', value: 'Men'},
-                {text: 'Female', value: 'Women'},
+                {text: 'Мужской', value: 'Men'},
+                {text: 'Женский', value: 'Women'},
             ],
             onFilter: (value, record) => record.gender.includes(value),
         },
         {
-            title: "Phone",
+            title: "Телефон",
             dataIndex: "phoneNumber",
             key: "phoneNumber",
             sorter: (a, b) => a.phoneNumber.localeCompare(b.phoneNumber),
         },
         {
-            title: "Experience",
+            title: "Опыт",
             dataIndex: "experience",
             key: "experience",
             sorter: (a, b) => a.experience - b.experience,
         },
         {
-            title: "Birth Date",
+            title: "Дата рождения",
             dataIndex: "birthDate",
             key: "birthDate",
             render: (text) => formatDate(text),
             sorter: (a, b) => new Date(a.birthDate) - new Date(b.birthDate),
         },
         {
-            title: "Actions",
+            title: "Действия",
             key: "actions",
             render: (_, record) => (
                 <>
                     <Button type="link" onClick={() => openUpdateModal(record)} style={{marginRight: 8}}>
-                        Update
+                        Обновить
                     </Button>
                     <Button type="link" danger onClick={() => handleDelete(record.id)}>
-                        Delete
+                        Удалить
                     </Button>
                 </>
             ),
@@ -186,7 +191,7 @@ const AdminDoctors = () => {
     ];
 
     return (
-        <div>
+        <div style={{padding: '0 24px'}}>
             <AdminAppHeader/>
             <div style={{display: 'flex', justifyContent: 'center', margin: '20px 0'}}>
                 <Button
@@ -194,11 +199,11 @@ const AdminDoctors = () => {
                     style={{fontSize: '16px', padding: '10px 20px'}}
                     onClick={openAddModal}
                 >
-                    Add Doctor
+                    Добавить врача
                 </Button>
             </div>
             <Search
-                placeholder="Search doctors"
+                placeholder="Поиск врачей"
                 onSearch={handleSearch}
                 style={{marginBottom: 20}}
                 allowClear
@@ -223,16 +228,16 @@ const AdminDoctors = () => {
                     style={{
                         position: 'absolute',
                         pointerEvents: 'none',
-                        top: mousePosition.y - 70, // Позиция выше курсора
-                        left: mousePosition.x + 10, // Немного вправо от курсора
-                        transition: 'transform 0.2s ease', // Плавный переход
+                        top: mousePosition.y - 70,
+                        left: mousePosition.x + 10,
+                        transition: 'transform 0.2s ease',
                     }}
                 >
                     <img
                         src={hoveredDoctor.image}
-                        alt="Doctor"
+                        alt="Доктор"
                         style={{
-                            width: '100px', // Увеличиваем размер
+                            width: '100px',
                             height: '100px',
                             borderRadius: '5px',
                             boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',

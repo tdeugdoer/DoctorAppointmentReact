@@ -10,3 +10,20 @@ a {
 .doctor-list-container {
     padding: 24px;
 }
+
+.row-status-free {
+    background-color: #f6ffed !important; /* Зеленый фон для свободных записей */
+}
+
+.row-status-booked {
+    background-color: #fffbe6 !important; /* Желтый фон для забронированных записей */
+}
+
+.row-status-completed {
+    background-color: #fff1f0 !important; /* Красный фон для завершенных записей */
+}
+
+/* Улучшаем видимость текста на цветном фоне */
+.ant-table-tbody > tr > td {
+    color: rgba(0, 0, 0, 0.85);
+}

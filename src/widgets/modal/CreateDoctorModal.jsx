@@ -16,7 +16,7 @@ const CreateDoctorModal = ({visible, onClose}) => {
             setFile(null);
             onClose();
         } catch (error) {
-            console.error("Submission failed:", error);
+            console.error("Ошибка при отправке:", error);
         }
     };
 
@@ -26,7 +26,7 @@ const CreateDoctorModal = ({visible, onClose}) => {
 
     return (
         <Modal
-            title="Add New Doctor"
+            title="Добавить нового врача"
             visible={visible}
             onCancel={onClose}
             footer={null}
@@ -46,85 +46,85 @@ const CreateDoctorModal = ({visible, onClose}) => {
             >
                 <Form.Item
                     name="name"
-                    label="First Name"
+                    label="Имя"
                     rules={[
-                        {required: true, message: "Name is required"},
-                        {max: 15, message: "Name cannot exceed 15 characters"},
+                        {required: true, message: "Имя обязательно"},
+                        {max: 15, message: "Имя не должно превышать 15 символов"},
                     ]}
                     style={{marginBottom: 8}} // Уменьшение отступа
                 >
-                    <Input placeholder="Enter first name"/>
+                    <Input placeholder="Введите имя"/>
                 </Form.Item>
 
                 <Form.Item
                     name="surname"
-                    label="Last Name"
+                    label="Фамилия"
                     rules={[
-                        {required: true, message: "Last name is required"},
-                        {max: 15, message: "Last name cannot exceed 15 characters"},
+                        {required: true, message: "Фамилия обязательна"},
+                        {max: 15, message: "Фамилия не должна превышать 15 символов"},
                     ]}
                     style={{marginBottom: 8}} // Уменьшение отступа
                 >
-                    <Input placeholder="Enter last name"/>
+                    <Input placeholder="Введите фамилию"/>
                 </Form.Item>
 
                 <Form.Item
                     name="patronymic"
-                    label="Patronymic"
-                    rules={[{max: 15, message: "Patronymic cannot exceed 15 characters"}]}
+                    label="Отчество"
+                    rules={[{max: 15, message: "Отчество не должно превышать 15 символов"}]}
                     style={{marginBottom: 8}} // Уменьшение отступа
                 >
-                    <Input placeholder="Enter patronymic"/>
+                    <Input placeholder="Введите отчество"/>
                 </Form.Item>
 
                 <Form.Item
                     name="specialization"
-                    label="Specialization"
-                    rules={[{required: true, message: "Specialization is required"}]}
+                    label="Специализация"
+                    rules={[{required: true, message: "Специализация обязательна"}]}
                     style={{marginBottom: 8}} // Уменьшение отступа
                 >
                     <Select>
-                        <Option value="Therapy">Therapy</Option>
-                        <Option value="Surgery">Surgery</Option>
-                        <Option value="Pediatrics">Pediatrics</Option>
-                        <Option value="Neurology">Neurology</Option>
-                        <Option value="Dentistry">Dentistry</Option>
-                        <Option value="Gynecology">Gynecology</Option>
-                        <Option value="Dermatological">Dermatological</Option>
-                        <Option value="Other">Other</Option>
+                        <Option value="Therapy">Терапевт</Option>
+                        <Option value="Surgery">Хирургия</Option>
+                        <Option value="Pediatrics">Педиатрия</Option>
+                        <Option value="Neurology">Неврология</Option>
+                        <Option value="Dentistry">Стоматология</Option>
+                        <Option value="Gynecology">Гинекология</Option>
+                        <Option value="Dermatological">Дерматология</Option>
+                        <Option value="Other">Другое</Option>
                     </Select>
                 </Form.Item>
 
                 <Form.Item
                     name="gender"
-                    label="Gender"
-                    rules={[{required: true, message: "Gender is required"}]}
+                    label="Пол"
+                    rules={[{required: true, message: "Пол обязателен"}]}
                     style={{marginBottom: 8}} // Уменьшение отступа
                 >
                     <Select>
-                        <Option value="Men">Male</Option>
-                        <Option value="Women">Female</Option>
+                        <Option value="Men">Мужской</Option>
+                        <Option value="Women">Женский</Option>
                     </Select>
                 </Form.Item>
 
                 <Form.Item
                     name="phoneNumber"
-                    label="Phone Number"
+                    label="Номер телефона"
                     rules={[
-                        {required: true, message: "Phone number is required"},
-                        {pattern: /^[+]?[0-9]{10,15}$/, message: "Invalid phone number format"},
+                        {required: true, message: "Номер телефона обязателен"},
+                        {pattern: /^[+]?[0-9]{10,15}$/, message: "Неверный формат номера телефона"},
                     ]}
                     style={{marginBottom: 8}} // Уменьшение отступа
                 >
-                    <Input placeholder="Enter phone number"/>
+                    <Input placeholder="Введите номер телефона"/>
                 </Form.Item>
 
                 <Form.Item
                     name="experience"
-                    label="Experience (years)"
+                    label="Опыт (лет)"
                     rules={[
-                        {required: true, message: "Experience is required"},
-                        {type: "number", min: 0, max: 100, message: "Experience must be between 0 and 100"},
+                        {required: true, message: "Опыт обязателен"},
+                        {type: "number", min: 0, max: 100, message: "Опыт должен быть от 0 до 100"},
                     ]}
                     style={{marginBottom: 8}} // Уменьшение отступа
                 >
@@ -133,14 +133,14 @@ const CreateDoctorModal = ({visible, onClose}) => {
 
                 <Form.Item
                     name="birthDate"
-                    label="Birth Date"
+                    label="Дата рождения"
                     rules={[
-                        {required: true, message: "Birth date is required"},
+                        {required: true, message: "Дата рождения обязательна"},
                         {
                             validator: (_, value) =>
                                 value && dayjs(value).isBefore(dayjs())
                                     ? Promise.resolve()
-                                    : Promise.reject(new Error("Birth date must be in the past")),
+                                    : Promise.reject(new Error("Дата рождения должна быть в прошлом")),
                         },
                     ]}
                     style={{marginBottom: 8}} // Уменьшение отступа
@@ -150,8 +150,8 @@ const CreateDoctorModal = ({visible, onClose}) => {
 
                 <Form.Item
                     name="file"
-                    label="Profile Picture"
-                    rules={[{required: true, message: "Profile picture is required"}]}
+                    label="Фото профиля"
+                    rules={[{required: true, message: "Фото профиля обязательно"}]}
                     style={{marginBottom: 8}} // Уменьшение отступа
                 >
                     <Upload
@@ -160,16 +160,16 @@ const CreateDoctorModal = ({visible, onClose}) => {
                         beforeUpload={() => false}
                         onChange={handleUploadChange}
                     >
-                        <Button>Upload Picture</Button>
+                        <Button>Загрузить фото</Button>
                     </Upload>
                 </Form.Item>
 
                 <Form.Item style={{marginTop: 16, marginBottom: 0}}>
                     <Button type="primary" htmlType="submit">
-                        Add Doctor
+                        Добавить врача
                     </Button>
                     <Button style={{marginLeft: 8}} onClick={onClose}>
-                        Cancel
+                        Отмена
                     </Button>
                 </Form.Item>
             </Form>

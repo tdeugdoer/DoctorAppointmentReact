@@ -5,18 +5,31 @@ import {UploadOutlined} from '@ant-design/icons';
 
 const RegisterModal = ({visible, onCancel}) => {
     const onFinish = (values) => {
-        console.log('Registration values:', values);
-        message.success('Registration successful!');
+        // Фиксированные данные для аутентификации
+        const authData = {
+            username: 'tegor2003@gmail.com',
+            role: 'patient',
+            id: '0910e49e-b1db-4378-93ba-58bae8425c75',
+            name: 'Терешкевич Егор Сергеевич'
+        };
+
+        localStorage.setItem('currentUser', JSON.stringify(authData));
+        message.success('Вы успешно зарегистрировались!');
+
         onCancel();
+
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
     };
 
     return (
         <Modal
-            title="Register"
+            title="Регистрация"
             visible={visible}
             onCancel={onCancel}
             footer={null}
-            style={{marginTop: -80}}
+            style={{marginTop: -60}}
         >
             <Form
                 name="register"
@@ -26,88 +39,88 @@ const RegisterModal = ({visible, onCancel}) => {
                 style={{marginBottom: -30}}
             >
                 <Form.Item
-                    label="Username"
+                    label="Имя пользователя"
                     name="username"
-                    rules={[{required: true, message: 'Please input your username!'}, {
-                        min: 5,
-                        message: 'Username must be at least 5 characters.'
-                    }]}
-                    style={{marginBottom: 8}} // Reduced margin
+                    rules={[
+                        {required: true, message: 'Пожалуйста, введите ваше имя пользователя!'},
+                        {min: 5, message: 'Имя пользователя должно содержать не менее 5 символов.'}
+                    ]}
+                    style={{marginBottom: 8}}
                 >
-                    <Input placeholder="Enter your username"/>
+                    <Input placeholder="Введите ваше имя пользователя"/>
                 </Form.Item>
 
                 <Form.Item
-                    label="Password"
+                    label="Пароль"
                     name="password"
-                    rules={[{required: true, message: 'Please input your password!'}, {
-                        min: 5,
-                        message: 'Password must be at least 5 characters.'
-                    }]}
-                    style={{marginBottom: 8}} // Reduced margin
+                    rules={[
+                        {required: true, message: 'Пожалуйста, введите ваш пароль!'},
+                        {min: 5, message: 'Пароль должен содержать не менее 5 символов.'}
+                    ]}
+                    style={{marginBottom: 8}}
                 >
-                    <Input.Password placeholder="Enter your password"/>
+                    <Input.Password placeholder="Введите ваш пароль"/>
                 </Form.Item>
 
                 <Form.Item
-                    label="Name"
+                    label="Имя"
                     name="name"
-                    rules={[{required: true, message: 'Please input your name!'}, {
-                        max: 15,
-                        message: 'Name cannot exceed 15 characters.'
-                    }]}
-                    style={{marginBottom: 8}} // Reduced margin
+                    rules={[
+                        {required: true, message: 'Пожалуйста, введите ваше имя!'},
+                        {max: 15, message: 'Имя не должно превышать 15 символов.'}
+                    ]}
+                    style={{marginBottom: 8}}
                 >
-                    <Input placeholder="Enter your name"/>
+                    <Input placeholder="Введите ваше имя"/>
                 </Form.Item>
 
                 <Form.Item
-                    label="Surname"
+                    label="Фамилия"
                     name="surname"
-                    rules={[{required: true, message: 'Please input your surname!'}, {
-                        max: 15,
-                        message: 'Surname cannot exceed 15 characters.'
-                    }]}
-                    style={{marginBottom: 8}} // Reduced margin
+                    rules={[
+                        {required: true, message: 'Пожалуйста, введите вашу фамилию!'},
+                        {max: 15, message: 'Фамилия не должна превышать 15 символов.'}
+                    ]}
+                    style={{marginBottom: 8}}
                 >
-                    <Input placeholder="Enter your surname"/>
+                    <Input placeholder="Введите вашу фамилию"/>
                 </Form.Item>
 
                 <Form.Item
-                    label="Patronymic"
+                    label="Отчество"
                     name="patronymic"
-                    rules={[{max: 15, message: 'Patronymic cannot exceed 15 characters.'}]}
-                    style={{marginBottom: 8}} // Reduced margin
+                    rules={[{max: 15, message: 'Отчество не должно превышать 15 символов.'}]}
+                    style={{marginBottom: 8}}
                 >
-                    <Input placeholder="Enter your patronymic"/>
+                    <Input placeholder="Введите ваше отчество"/>
                 </Form.Item>
 
                 <Form.Item
                     name="gender"
-                    label="Gender"
-                    rules={[{required: true, message: "Gender is required"}]}
-                    style={{marginBottom: 8}} // Уменьшение отступа
+                    label="Пол"
+                    rules={[{required: true, message: "Пол обязателен"}]}
+                    style={{marginBottom: 8}}
                 >
                     <Select>
-                        <Option value="Men">Male</Option>
-                        <Option value="Women">Female</Option>
+                        <Select.Option value="Men">Мужской</Select.Option>
+                        <Select.Option value="Women">Женский</Select.Option>
                     </Select>
                 </Form.Item>
 
                 <Form.Item
-                    label="Phone Number"
+                    label="Номер телефона"
                     name="phoneNumber"
-                    rules={[{required: true, message: 'Please input your phone number!'}]}
-                    style={{marginBottom: 8}} // Reduced margin
+                    rules={[{required: true, message: 'Пожалуйста, введите ваш номер телефона!'}]}
+                    style={{marginBottom: 8}}
                 >
-                    <Input placeholder="Enter your phone number"/>
+                    <Input placeholder="Введите ваш номер телефона"/>
                 </Form.Item>
 
                 <Form.Item
-                    label="Birth Date"
+                    label="Дата рождения"
                     name="birthDate"
-                    rules={[{required: true, message: 'Please select your birth date!'}]}
-                    style={{marginBottom: 8}} // Reduced margin
+                    rules={[{required: true, message: 'Пожалуйста, выберите вашу дату рождения!'}]}
+                    style={{marginBottom: 8}}
                 >
                     <DatePicker
                         format="YYYY-MM-DD"
@@ -117,22 +130,22 @@ const RegisterModal = ({visible, onCancel}) => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Profile Picture"
+                    label="Фото профиля"
                     name="profilePicture"
-                    rules={[{required: true, message: 'Please upload your profile picture!'}]}
-                    style={{marginBottom: 8}} // Reduced margin
+                    rules={[{required: true, message: 'Пожалуйста, загрузите ваше фото профиля!'}]}
+                    style={{marginBottom: 8}}
                 >
                     <Upload
                         name="profilePicture"
-                        beforeUpload={() => false} // Prevent automatic upload
+                        beforeUpload={() => false}
                     >
-                        <Button icon={<UploadOutlined/>}>Upload Profile Picture</Button>
+                        <Button icon={<UploadOutlined/>}>Загрузить фото профиля</Button>
                     </Upload>
                 </Form.Item>
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit" block>
-                        Register
+                        Зарегистрироваться
                     </Button>
                 </Form.Item>
             </Form>
